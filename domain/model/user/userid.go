@@ -1,6 +1,9 @@
 package user
 
-import "reflect"
+import (
+	"fmt"
+	"reflect"
+)
 
 type UserId struct {
 	value string
@@ -12,4 +15,8 @@ func NewUserId(value string) (*UserId, error) {
 
 func (userId *UserId) Equals(other *UserId) bool {
 	return reflect.DeepEqual(userId.value, other.value)
+}
+
+func (userId *UserId) String() string {
+	return fmt.Sprintf("UserId [value: %s]", userId.value)
 }

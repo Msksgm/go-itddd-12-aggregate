@@ -1,6 +1,7 @@
 package user
 
 import (
+	"fmt"
 	"testing"
 
 	"github.com/google/go-cmp/cmp"
@@ -44,4 +45,16 @@ func Test_UserIdEquals(t *testing.T) {
 			t.Errorf("userId: %v must be equal to otherUserId: %v", userId, otherUserId)
 		}
 	})
+}
+
+func Test_UserIdString(t *testing.T) {
+	userId, err := NewUserId("id")
+	if err != nil {
+		t.Fatal(err)
+	}
+	got := fmt.Sprint(userId)
+	want := fmt.Sprintf("UserId [value: %s]", userId.value)
+	if got != want {
+		t.Errorf("got %s, want %s", got, want)
+	}
 }
