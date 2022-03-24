@@ -19,18 +19,29 @@ func Test_NewUserId(t *testing.T) {
 	}
 }
 
-func TestUserIdEquals(t *testing.T) {
+func Test_UserIdEquals(t *testing.T) {
 	userId, err := NewUserId("id")
 	if err != nil {
 		t.Fatal(err)
 	}
+	t.Run("equal", func(t *testing.T) {
+		otherUserId, err := NewUserId("id")
+		if err != nil {
+			t.Fatal(err)
+		}
 
-	otherUserId, err := NewUserId("id")
-	if err != nil {
-		t.Fatal(err)
-	}
+		if !userId.Equals(otherUserId) {
+			t.Errorf("userId: %v must be equal to otherUserId: %v", userId, otherUserId)
+		}
+	})
+	t.Run("not equal", func(t *testing.T) {
+		otherUserId, err := NewUserId("otherId")
+		if err != nil {
+			t.Fatal(err)
+		}
 
-	if !userId.Equals(otherUserId) {
-		t.Errorf("userId: %v must be equal to otherUserId: %v", userId, otherUserId)
-	}
+		if userId.Equals(otherUserId) {
+			t.Errorf("userId: %v must be equal to otherUserId: %v", userId, otherUserId)
+		}
+	})
 }
