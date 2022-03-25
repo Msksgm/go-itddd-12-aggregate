@@ -1,6 +1,9 @@
 package user
 
-import "fmt"
+import (
+	"fmt"
+	"reflect"
+)
 
 type UserName struct {
 	value string
@@ -14,4 +17,8 @@ func NewUserName(value string) (*UserName, error) {
 		return nil, fmt.Errorf("UserName is less than 20 characters.")
 	}
 	return &UserName{value: value}, nil
+}
+
+func (userName *UserName) Equals(other UserName) bool {
+	return reflect.DeepEqual(userName.value, other.value)
 }
