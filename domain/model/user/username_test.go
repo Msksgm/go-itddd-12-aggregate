@@ -39,11 +39,22 @@ func Test_UserNameEquals(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	otherUserName, err := NewUserName("username")
-	if err != nil {
-		t.Fatal(err)
-	}
-	if !userName.Equals(*otherUserName) {
-		t.Errorf("userName %v must be equal to otherUserName %v", userName, otherUserName)
-	}
+	t.Run("equal", func(t *testing.T) {
+		otherUserName, err := NewUserName("username")
+		if err != nil {
+			t.Fatal(err)
+		}
+		if !userName.Equals(*otherUserName) {
+			t.Errorf("userName %v must be equal to otherUserName %v", userName, otherUserName)
+		}
+	})
+	t.Run("not equal", func(t *testing.T) {
+		otherUserName, err := NewUserName("otherusername")
+		if err != nil {
+			t.Fatal(err)
+		}
+		if userName.Equals(*otherUserName) {
+			t.Errorf("userName %v must not be equal to otherUserName %v", userName, otherUserName)
+		}
+	})
 }
