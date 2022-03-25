@@ -18,9 +18,16 @@ func Test_NewUserName(t *testing.T) {
 			t.Errorf("mismatch (-want, +got):\n%s", diff)
 		}
 	})
-	t.Run("fail", func(t *testing.T) {
+	t.Run("fail because value is less than 3 characters", func(t *testing.T) {
 		_, err := NewUserName("us")
 		want := "UserName is more than 3 characters."
+		if got := err.Error(); got != want {
+			t.Errorf("got %s, want %s", got, want)
+		}
+	})
+	t.Run("fail because value is more than 20 characters", func(t *testing.T) {
+		_, err := NewUserName("usernameusernameusername")
+		want := "UserName is less than 20 characters."
 		if got := err.Error(); got != want {
 			t.Errorf("got %s, want %s", got, want)
 		}
