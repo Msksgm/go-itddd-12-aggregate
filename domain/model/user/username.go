@@ -22,3 +22,7 @@ func NewUserName(value string) (*UserName, error) {
 func (userName *UserName) Equals(other UserName) bool {
 	return reflect.DeepEqual(userName.value, other.value)
 }
+
+func (userName *UserName) String() string {
+	return fmt.Sprintf("UserName: [value: %s]", userName.value)
+}
