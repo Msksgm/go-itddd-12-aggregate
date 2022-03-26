@@ -8,15 +8,15 @@ import (
 )
 
 func Test_NewCircle(t *testing.T) {
-	userId, err := user.NewUserId("id")
+	ownerId, err := user.NewUserId("ownerId")
 	if err != nil {
 		t.Fatal(err)
 	}
-	userName, err := user.NewUserName("username")
+	ownerName, err := user.NewUserName("ownerName")
 	if err != nil {
 		t.Fatal(err)
 	}
-	owner, err := user.NewUser(*userId, *userName)
+	owner, err := user.NewUser(*ownerId, *ownerName)
 	if err != nil {
 		t.Fatal(err)
 	}
