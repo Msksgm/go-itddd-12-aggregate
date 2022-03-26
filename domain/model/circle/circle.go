@@ -16,3 +16,8 @@ func NewCircle(id CircleId, name CircleName, owner user.User, members []user.Use
 func (circle *Circle) IsFull() bool {
 	return len(circle.members) >= 29
 }
+
+func (circle *Circle) Join(newMember *user.User) error {
+	circle.members = append(circle.members, *newMember)
+	return nil
+}
