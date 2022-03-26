@@ -18,8 +18,8 @@ func (circle *Circle) IsFull() bool {
 }
 
 type CircleIsFullError struct {
-	Member  user.User
-	Message string
+	CircleId CircleId
+	Message  string
 }
 
 func (cife *CircleIsFullError) Error() string {
@@ -28,7 +28,7 @@ func (cife *CircleIsFullError) Error() string {
 
 func (circle *Circle) Join(newMember *user.User) error {
 	if circle.IsFull() {
-		return &CircleIsFullError{Member: *newMember, Message: "cannnot join member because the circle is full"}
+		return &CircleIsFullError{CircleId: circle.id, Message: "cannnot join member because the circle is full"}
 	}
 	circle.members = append(circle.members, *newMember)
 	return nil
