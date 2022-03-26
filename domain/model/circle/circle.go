@@ -12,3 +12,7 @@ type Circle struct {
 func NewCircle(id CircleId, name CircleName, owner user.User, members []user.User) (*Circle, error) {
 	return &Circle{id: id, name: name, owner: owner, members: members}, nil
 }
+
+func (circle *Circle) IsFull() bool {
+	return len(circle.members) >= 29
+}
