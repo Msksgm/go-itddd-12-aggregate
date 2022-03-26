@@ -240,3 +240,70 @@ func Test_Join(t *testing.T) {
 		}
 	})
 }
+
+func Test_ChangeMemberName(t *testing.T) {
+	ownerId, err := user.NewUserId("ownerId")
+	if err != nil {
+		t.Fatal(err)
+	}
+	ownerName, err := user.NewUserName("ownerName")
+	if err != nil {
+		t.Fatal(err)
+	}
+	owner, err := user.NewUser(*ownerId, *ownerName)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	circleId, err := NewCircleId("circleId")
+	if err != nil {
+		t.Fatal(err)
+	}
+	circleName, err := NewCircleName("circlename")
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	memberId, err := user.NewUserId("memberId")
+	if err != nil {
+		t.Fatal(err)
+	}
+	memberName, err := user.NewUserName("memberName")
+	if err != nil {
+		t.Fatal(err)
+	}
+	member, err := user.NewUser(*memberId, *memberName)
+	if err != nil {
+		t.Fatal(err)
+	}
+	members := []user.User{*owner, *member}
+
+	circle, err := NewCircle(*circleId, *circleName, *owner, members)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	changedUserName, err := user.NewUserName("changedMemberName")
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	chagedUserNameMember, err := user.NewUser(*memberId, *changedUserName)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	if err := circle.ChangeMemberName(memberId, changedUserName); err != nil {
+		t.Error(err)
+	}
+	got := circle
+	want := &Circle{
+		id:      *circleId,
+		name:    *circleName,
+		owner:   *owner,
+		members: []user.User{*owner, *chagedUserNameMember},
+	}
+	if diff := cmp.Diff(want, got, cmp.AllowUnexported(Circle{}, CircleId{}, CircleName{}, user.User{}, user.UserId{}, user.UserName{})); diff != "" {
+		t.Errorf("mismatch (-want, +got):\n%s", diff)
+	}
+}

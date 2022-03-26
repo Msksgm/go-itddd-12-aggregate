@@ -33,3 +33,13 @@ func (circle *Circle) Join(newMember *user.User) error {
 	circle.members = append(circle.members, *newMember)
 	return nil
 }
+
+func (circle *Circle) ChangeMemberName(memberId *user.UserId, changedUserName *user.UserName) error {
+	for i, member := range circle.members {
+		if member.Id().Equals(memberId) {
+			circle.members[i].ChangeName(*changedUserName)
+			return nil
+		}
+	}
+	return nil
+}

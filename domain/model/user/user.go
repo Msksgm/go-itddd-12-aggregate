@@ -12,3 +12,7 @@ func NewUser(userId UserId, userName UserName) (*User, error) {
 func (user *User) ChangeName(userName UserName) {
 	user.name = userName
 }
+
+func (user *User) Id() *UserId {
+	return &user.id
+}
