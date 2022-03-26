@@ -1,6 +1,8 @@
 package circle
 
 import (
+	"errors"
+	"reflect"
 	"testing"
 
 	"github.com/Msksgm/go-itddd-12-aggregate/domain/model/user"
@@ -174,35 +176,67 @@ func Test_Join(t *testing.T) {
 
 	members := []user.User{*owner}
 
-	circle, err := NewCircle(*circleId, *circleName, *owner, members)
-	if err != nil {
-		t.Fatal(err)
-	}
+	t.Run("success", func(t *testing.T) {
+		circle, err := NewCircle(*circleId, *circleName, *owner, members)
+		if err != nil {
+			t.Fatal(err)
+		}
 
-	memberId, err := user.NewUserId("memberId")
-	if err != nil {
-		t.Fatal(err)
-	}
-	memberName, err := user.NewUserName("memberName")
-	if err != nil {
-		t.Fatal(err)
-	}
-	member, err := user.NewUser(*memberId, *memberName)
-	if err != nil {
-		t.Fatal(err)
-	}
-	wantMembers := append(members, *member)
-	want := &Circle{
-		id:      *circleId,
-		name:    *circleName,
-		owner:   *owner,
-		members: wantMembers,
-	}
+		memberId, err := user.NewUserId("memberId")
+		if err != nil {
+			t.Fatal(err)
+		}
+		memberName, err := user.NewUserName("memberName")
+		if err != nil {
+			t.Fatal(err)
+		}
+		member, err := user.NewUser(*memberId, *memberName)
+		if err != nil {
+			t.Fatal(err)
+		}
+		wantMembers := append(members, *member)
+		want := &Circle{
+			id:      *circleId,
+			name:    *circleName,
+			owner:   *owner,
+			members: wantMembers,
+		}
 
-	if err := circle.Join(member); err != nil {
-		t.Error(err)
-	}
-	if diff := cmp.Diff(want, circle, cmp.AllowUnexported(CircleId{}, CircleName{}, user.User{}, user.UserId{}, user.UserName{}, Circle{})); diff != "" {
-		t.Errorf("mismatch (-want, +got):\n%s", diff)
-	}
+		if err := circle.Join(member); err != nil {
+			t.Error(err)
+		}
+		if diff := cmp.Diff(want, circle, cmp.AllowUnexported(CircleId{}, CircleName{}, user.User{}, user.UserId{}, user.UserName{}, Circle{})); diff != "" {
+			t.Errorf("mismatch (-want, +got):\n%s", diff)
+		}
+	})
+	t.Run("fail", func(t *testing.T) {
+		memberId, err := user.NewUserId("memberId")
+		if err != nil {
+			t.Fatal(err)
+		}
+		memberName, err := user.NewUserName("memberName")
+		if err != nil {
+			t.Fatal(err)
+		}
+		member, err := user.NewUser(*memberId, *memberName)
+		if err != nil {
+			t.Fatal(err)
+		}
+
+		// add members to full amount
+		for i := 0; i < 29; i++ {
+			members = append(members, *member)
+		}
+		circle, err := NewCircle(*circleId, *circleName, *owner, members)
+		if err != nil {
+			t.Fatal(err)
+		}
+
+		var circleIsFullError *CircleIsFullError
+
+		err = circle.Join(member)
+		if !errors.As(err, &circleIsFullError) {
+			t.Errorf("err type: %v, expect err type: %v", reflect.TypeOf(err), reflect.TypeOf(circleIsFullError))
+		}
+	})
 }
