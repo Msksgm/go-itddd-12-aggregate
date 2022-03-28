@@ -34,6 +34,15 @@ func (circle *Circle) Join(newMember *user.User) error {
 	return nil
 }
 
+type MemberIsNotFoundError struct {
+	MemberId user.UserId
+	Message  string
+}
+
+func (minfe *MemberIsNotFoundError) Error() string {
+	return minfe.Message
+}
+
 func (circle *Circle) ChangeMemberName(memberId *user.UserId, changedUserName *user.UserName) error {
 	for i, member := range circle.members {
 		if member.Id().Equals(memberId) {
@@ -41,5 +50,5 @@ func (circle *Circle) ChangeMemberName(memberId *user.UserId, changedUserName *u
 			return nil
 		}
 	}
-	return nil
+	return &MemberIsNotFoundError{MemberId: *memberId, Message: "member is not found"}
 }

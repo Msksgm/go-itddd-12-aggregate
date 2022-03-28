@@ -276,34 +276,56 @@ func Test_ChangeMemberName(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	members := []user.User{*owner, *member}
+	t.Run("succes", func(t *testing.T) {
+		members := []user.User{*owner, *member}
 
-	circle, err := NewCircle(*circleId, *circleName, *owner, members)
-	if err != nil {
-		t.Fatal(err)
-	}
+		circle, err := NewCircle(*circleId, *circleName, *owner, members)
+		if err != nil {
+			t.Fatal(err)
+		}
 
-	changedUserName, err := user.NewUserName("changedMemberName")
-	if err != nil {
-		t.Fatal(err)
-	}
+		changedUserName, err := user.NewUserName("changedMemberName")
+		if err != nil {
+			t.Fatal(err)
+		}
 
-	chagedUserNameMember, err := user.NewUser(*memberId, *changedUserName)
-	if err != nil {
-		t.Fatal(err)
-	}
+		chagedUserNameMember, err := user.NewUser(*memberId, *changedUserName)
+		if err != nil {
+			t.Fatal(err)
+		}
 
-	if err := circle.ChangeMemberName(memberId, changedUserName); err != nil {
-		t.Error(err)
-	}
-	got := circle
-	want := &Circle{
-		id:      *circleId,
-		name:    *circleName,
-		owner:   *owner,
-		members: []user.User{*owner, *chagedUserNameMember},
-	}
-	if diff := cmp.Diff(want, got, cmp.AllowUnexported(Circle{}, CircleId{}, CircleName{}, user.User{}, user.UserId{}, user.UserName{})); diff != "" {
-		t.Errorf("mismatch (-want, +got):\n%s", diff)
-	}
+		if err := circle.ChangeMemberName(memberId, changedUserName); err != nil {
+			t.Error(err)
+		}
+		got := circle
+		want := &Circle{
+			id:      *circleId,
+			name:    *circleName,
+			owner:   *owner,
+			members: []user.User{*owner, *chagedUserNameMember},
+		}
+		if diff := cmp.Diff(want, got, cmp.AllowUnexported(Circle{}, CircleId{}, CircleName{}, user.User{}, user.UserId{}, user.UserName{})); diff != "" {
+			t.Errorf("mismatch (-want, +got):\n%s", diff)
+		}
+	})
+	t.Run("fail", func(t *testing.T) {
+		// member is not included in members
+		members := []user.User{*owner}
+
+		circle, err := NewCircle(*circleId, *circleName, *owner, members)
+		if err != nil {
+			t.Fatal(err)
+		}
+
+		changedUserName, err := user.NewUserName("changedMemberName")
+		if err != nil {
+			t.Fatal(err)
+		}
+
+		var memberIsNotFoundError *MemberIsNotFoundError
+		err = circle.ChangeMemberName(memberId, changedUserName)
+		if !errors.As(err, &memberIsNotFoundError) {
+			t.Errorf("err type: %v, expect err type: %v", reflect.TypeOf(err), reflect.TypeOf(memberIsNotFoundError))
+		}
+	})
 }
