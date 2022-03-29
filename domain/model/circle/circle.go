@@ -52,3 +52,7 @@ func (circle *Circle) ChangeMemberName(memberId *user.UserId, changedUserName *u
 	}
 	return &MemberIsNotFoundError{MemberId: *memberId, Message: "member is not found"}
 }
+
+func (circle *Circle) Name() *CircleName {
+	return &circle.name
+}
