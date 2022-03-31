@@ -19,6 +19,10 @@ func NewCircleName(value string) (*CircleName, error) {
 	return &CircleName{value: value}, nil
 }
 
+func (circleName *CircleName) Value() string {
+	return circleName.value
+}
+
 func (circleName *CircleName) Equals(other CircleName) bool {
 	return reflect.DeepEqual(circleName.value, other.value)
 }
