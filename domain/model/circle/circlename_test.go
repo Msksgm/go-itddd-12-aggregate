@@ -36,28 +36,30 @@ func Test_NewCircleName(t *testing.T) {
 }
 
 func Test_CircleNameEquals(t *testing.T) {
+	data := []struct {
+		testname string
+		username string
+		want     bool
+	}{
+		{"equal", "username", true},
+		{"not equal", "otherusername", false},
+	}
 	circleName, err := NewCircleName("username")
 	if err != nil {
 		t.Fatal(err)
 	}
-	t.Run("equal", func(t *testing.T) {
-		otherCircleName, err := NewCircleName("username")
-		if err != nil {
-			t.Fatal(err)
-		}
-		if !circleName.Equals(*otherCircleName) {
-			t.Errorf("circleName %v must be equal to otherCircleName %v", circleName, otherCircleName)
-		}
-	})
-	t.Run("not equal", func(t *testing.T) {
-		otherCircleName, err := NewCircleName("otherusername")
-		if err != nil {
-			t.Fatal(err)
-		}
-		if circleName.Equals(*otherCircleName) {
-			t.Errorf("circleName %v must not be equal to otherCircleName %v", circleName, otherCircleName)
-		}
-	})
+	for _, d := range data {
+		t.Run(d.testname, func(t *testing.T) {
+			otherCircleName, err := NewCircleName(d.username)
+			if err != nil {
+				t.Fatal(err)
+			}
+			got := circleName.Equals(*otherCircleName)
+			if diff := cmp.Diff(d.want, got, cmp.AllowUnexported()); diff != "" {
+				t.Errorf("mismatch (-want, +got):\n%s", diff)
+			}
+		})
+	}
 }
 
 func Test_CircleNameString(t *testing.T) {
