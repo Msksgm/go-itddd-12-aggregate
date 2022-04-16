@@ -20,30 +20,31 @@ func Test_NewCircleId(t *testing.T) {
 }
 
 func Test_CircleIdEquals(t *testing.T) {
+	data := []struct {
+		testname string
+		id       string
+		want     bool
+	}{
+		{"equal", "id", true},
+		{"not equal", "otherId", false},
+	}
 	circleId, err := NewCircleId("id")
 	if err != nil {
 		t.Fatal(err)
 	}
-	t.Run("equal", func(t *testing.T) {
-		otherCircleId, err := NewCircleId("id")
-		if err != nil {
-			t.Fatal(err)
-		}
+	for _, d := range data {
+		t.Run(d.testname, func(t *testing.T) {
+			otherCircleId, err := NewCircleId(d.id)
+			if err != nil {
+				t.Fatal(err)
+			}
 
-		if !circleId.Equals(otherCircleId) {
-			t.Errorf("circleId: %v must be equal to otherCircleId: %v", circleId, otherCircleId)
-		}
-	})
-	t.Run("not equal", func(t *testing.T) {
-		otherCircleId, err := NewCircleId("otherId")
-		if err != nil {
-			t.Fatal(err)
-		}
-
-		if circleId.Equals(otherCircleId) {
-			t.Errorf("circleId: %v must be equal to otherCircleId: %v", circleId, otherCircleId)
-		}
-	})
+			got := circleId.Equals(otherCircleId)
+			if diff := cmp.Diff(d.want, got, cmp.AllowUnexported()); diff != "" {
+				t.Errorf("mismatch (-want, +got):\n%s", diff)
+			}
+		})
+	}
 }
 
 func Test_CircleIdString(t *testing.T) {
