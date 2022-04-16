@@ -130,35 +130,26 @@ func Test_Join(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	circleId, err := NewCircleId("circleId")
+	memberId, err := user.NewUserId("memberId")
 	if err != nil {
 		t.Fatal(err)
 	}
-	circleName, err := NewCircleName("circlename")
+	memberName, err := user.NewUserName("memberName")
 	if err != nil {
 		t.Fatal(err)
 	}
+	member, err := user.NewUser(*memberId, *memberName)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	circleId := &CircleId{value: "circleId"}
+	circleName := &CircleName{value: "circlename"}
 
 	members := []user.User{*owner}
 
+	circle := &Circle{*circleId, *circleName, *owner, members}
 	t.Run("success", func(t *testing.T) {
-		circle, err := NewCircle(*circleId, *circleName, *owner, members)
-		if err != nil {
-			t.Fatal(err)
-		}
-
-		memberId, err := user.NewUserId("memberId")
-		if err != nil {
-			t.Fatal(err)
-		}
-		memberName, err := user.NewUserName("memberName")
-		if err != nil {
-			t.Fatal(err)
-		}
-		member, err := user.NewUser(*memberId, *memberName)
-		if err != nil {
-			t.Fatal(err)
-		}
 		wantMembers := append(members, *member)
 		want := &Circle{
 			id:      *circleId,
@@ -175,19 +166,6 @@ func Test_Join(t *testing.T) {
 		}
 	})
 	t.Run("fail", func(t *testing.T) {
-		memberId, err := user.NewUserId("memberId")
-		if err != nil {
-			t.Fatal(err)
-		}
-		memberName, err := user.NewUserName("memberName")
-		if err != nil {
-			t.Fatal(err)
-		}
-		member, err := user.NewUser(*memberId, *memberName)
-		if err != nil {
-			t.Fatal(err)
-		}
-
 		// add members to full amount
 		for i := 0; i < 29; i++ {
 			members = append(members, *member)
