@@ -37,6 +37,15 @@ func Test_Exists(t *testing.T) {
 			&Circle{id: *circleId, name: *circleName, owner: *owner, members: members},
 			"userService.Exists must be true but false",
 		},
+		{
+			"not exists",
+			func(circleName CircleName) (*Circle, error) {
+				return nil, nil
+			},
+			false,
+			&Circle{id: *circleId, name: *circleName, owner: *owner, members: members},
+			"userService.Exists must be false but true",
+		},
 	}
 	circleServie := CircleService{}
 
@@ -48,24 +57,8 @@ func Test_Exists(t *testing.T) {
 				t.Fatal(err)
 			}
 			if got != d.want {
-				t.Errorf(d.testErrMsg)
+				t.Errorf("got %v, want %v", got, d.want)
 			}
 		})
 	}
-	// t.Run("not exists", func(t *testing.T) {
-	// 	unexpectedCircleName, _ := NewCircleName("unexpectedCirclename")
-	// 	circle := &Circle{
-	// 		id:      *circleId,
-	// 		name:    *unexpectedCircleName,
-	// 		owner:   *owner,
-	// 		members: members,
-	// 	}
-	// 	isExists, err := circleService.Exists(circle)
-	// 	if err != nil {
-	// 		t.Fatal(err)
-	// 	}
-	// 	if isExists {
-	// 		t.Errorf("isExists must be %v but %v", isExists, isExists)
-	// 	}
-	// })
 }
