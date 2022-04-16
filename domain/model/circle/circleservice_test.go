@@ -6,66 +6,66 @@ import (
 	"github.com/Msksgm/go-itddd-12-aggregate/domain/model/user"
 )
 
-type ICircleRepositoryStub struct{}
+type CircleRepositorierStub struct {
+	findByCircleName func(circleName CircleName) (*Circle, error)
+}
 
-func (cs ICircleRepositoryStub) FindByCircleName(circleName *CircleName) (*Circle, error) {
-	ownerId, _ := user.NewUserId("ownerId")
-	ownerName, _ := user.NewUserName("ownerName")
-	owner, _ := user.NewUser(*ownerId, *ownerName)
-	circleId := &CircleId{value: "circleId"}
-	members := []user.User{*owner}
-
-	expectedCircleName, _ := NewCircleName("circlename")
-	expectedCircle := &Circle{
-		id:      *circleId,
-		name:    *expectedCircleName,
-		owner:   *owner,
-		members: members,
-	}
-	if circleName.Equals(*expectedCircleName) {
-		return expectedCircle, nil
-	}
-	return nil, nil
+func (crs CircleRepositorierStub) FindByCircleName(circleName *CircleName) (*Circle, error) {
+	return crs.findByCircleName(*circleName)
 }
 
 func Test_Exists(t *testing.T) {
-	circleService := CircleService{circleRepository: ICircleRepositoryStub{}}
-
 	ownerId, _ := user.NewUserId("ownerId")
 	ownerName, _ := user.NewUserName("ownerName")
 	owner, _ := user.NewUser(*ownerId, *ownerName)
 	circleId := &CircleId{value: "circleId"}
+	circleName, _ := NewCircleName("circlename")
 	members := []user.User{*owner}
-	t.Run("exists", func(t *testing.T) {
-		circleName, _ := NewCircleName("circlename")
-		circle := &Circle{
-			id:      *circleId,
-			name:    *circleName,
-			owner:   *owner,
-			members: members,
-		}
-		isExists, err := circleService.Exists(circle)
-		if err != nil {
-			t.Fatal(err)
-		}
-		if !isExists {
-			t.Errorf("isExists must be %v but %v", isExists, isExists)
-		}
-	})
-	t.Run("not exists", func(t *testing.T) {
-		unexpectedCircleName, _ := NewCircleName("unexpectedCirclename")
-		circle := &Circle{
-			id:      *circleId,
-			name:    *unexpectedCircleName,
-			owner:   *owner,
-			members: members,
-		}
-		isExists, err := circleService.Exists(circle)
-		if err != nil {
-			t.Fatal(err)
-		}
-		if isExists {
-			t.Errorf("isExists must be %v but %v", isExists, isExists)
-		}
-	})
+	data := []struct {
+		testname         string
+		findByCircleName func(circleName CircleName) (*Circle, error)
+		want             bool
+		circle           *Circle
+		testErrMsg       string
+	}{
+		{
+			"exists",
+			func(circleName CircleName) (*Circle, error) {
+				return &Circle{id: *circleId, name: CircleName{value: "circlename"}, owner: *owner, members: members}, nil
+			},
+			true,
+			&Circle{id: *circleId, name: *circleName, owner: *owner, members: members},
+			"userService.Exists must be true but false",
+		},
+	}
+	circleServie := CircleService{}
+
+	for _, d := range data {
+		t.Run(d.testname, func(t *testing.T) {
+			circleServie.circleRepository = &CircleRepositorierStub{findByCircleName: d.findByCircleName}
+			got, err := circleServie.Exists(d.circle)
+			if err != nil {
+				t.Fatal(err)
+			}
+			if got != d.want {
+				t.Errorf(d.testErrMsg)
+			}
+		})
+	}
+	// t.Run("not exists", func(t *testing.T) {
+	// 	unexpectedCircleName, _ := NewCircleName("unexpectedCirclename")
+	// 	circle := &Circle{
+	// 		id:      *circleId,
+	// 		name:    *unexpectedCircleName,
+	// 		owner:   *owner,
+	// 		members: members,
+	// 	}
+	// 	isExists, err := circleService.Exists(circle)
+	// 	if err != nil {
+	// 		t.Fatal(err)
+	// 	}
+	// 	if isExists {
+	// 		t.Errorf("isExists must be %v but %v", isExists, isExists)
+	// 	}
+	// })
 }
