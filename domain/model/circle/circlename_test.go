@@ -19,7 +19,7 @@ func Test_NewCircleName(t *testing.T) {
 		{"fail because value is more than 20 characters", "usernameusernameusername", nil, "CircleName is less than 20 characters."},
 	}
 	for _, d := range data {
-		t.Run("success", func(t *testing.T) {
+		t.Run(d.testname, func(t *testing.T) {
 			got, err := NewCircleName(d.userName)
 			if diff := cmp.Diff(d.want, got, cmp.AllowUnexported(CircleName{})); diff != "" {
 				t.Errorf("mismatch (-want, +got):\n%s", diff)
