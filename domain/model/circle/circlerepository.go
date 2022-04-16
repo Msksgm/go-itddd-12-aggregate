@@ -1,5 +1,5 @@
 package circle
 
-type ICircleRepository interface {
+type CircleRepositorier interface {
 	FindByCircleName(circleName *CircleName) (*Circle, error)
 }

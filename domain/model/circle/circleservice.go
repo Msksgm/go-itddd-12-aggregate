@@ -1,10 +1,10 @@
 package circle
 
 type CircleService struct {
-	circleRepository ICircleRepository
+	circleRepository CircleRepositorier
 }
 
-func (circleService *CircleService) NewCircleService(circleRepository ICircleRepository) error {
+func (circleService *CircleService) NewCircleService(circleRepository CircleRepositorier) error {
 	circleService.circleRepository = circleRepository
 	return nil
 }
