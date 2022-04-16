@@ -198,14 +198,8 @@ func Test_ChangeMemberName(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	circleId, err := NewCircleId("circleId")
-	if err != nil {
-		t.Fatal(err)
-	}
-	circleName, err := NewCircleName("circlename")
-	if err != nil {
-		t.Fatal(err)
-	}
+	circleId := &CircleId{value: "circleId"}
+	circleName := &CircleName{value: "circlename"}
 
 	memberId, err := user.NewUserId("memberId")
 	if err != nil {
