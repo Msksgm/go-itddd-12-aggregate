@@ -143,8 +143,8 @@ func Test_Join(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	circleId := &CircleId{value: "circleId"}
-	circleName := &CircleName{value: "circlename"}
+	circleId := &CircleId{Value: "circleId"}
+	circleName := &CircleName{Value: "circlename"}
 
 	members := []user.User{*owner}
 
@@ -198,8 +198,8 @@ func Test_ChangeMemberName(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	circleId := &CircleId{value: "circleId"}
-	circleName := &CircleName{value: "circlename"}
+	circleId := &CircleId{Value: "circleId"}
+	circleName := &CircleName{Value: "circlename"}
 
 	memberId, err := user.NewUserId("memberId")
 	if err != nil {

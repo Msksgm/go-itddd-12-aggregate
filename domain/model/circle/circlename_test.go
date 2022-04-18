@@ -14,7 +14,7 @@ func Test_NewCircleName(t *testing.T) {
 		want     *CircleName
 		errMsg   string
 	}{
-		{"success", "username", &CircleName{value: "username"}, ""},
+		{"success", "username", &CircleName{Value: "username"}, ""},
 		{"fail because value is less than 3 characters", "us", nil, "CircleName is more than 3 characters."},
 		{"fail because value is more than 20 characters", "usernameusernameusername", nil, "CircleName is less than 20 characters."},
 	}
@@ -67,7 +67,7 @@ func Test_CircleNameString(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	want := fmt.Sprintf("CircleName: [value: %s]", circleName.value)
+	want := fmt.Sprintf("CircleName: [value: %s]", circleName.Value)
 	got := fmt.Sprint(circleName)
 	if got != want {
 		t.Errorf("got %s, want %s", got, want)

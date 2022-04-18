@@ -31,7 +31,7 @@ func Test_Exists(t *testing.T) {
 		{
 			"exists",
 			func(circleName CircleName) (*Circle, error) {
-				return &Circle{id: *circleId, name: CircleName{value: "circlename"}, owner: *owner, members: members}, nil
+				return &Circle{id: *circleId, name: CircleName{Value: "circlename"}, owner: *owner, members: members}, nil
 			},
 			true,
 			&Circle{id: *circleId, name: *circleName, owner: *owner, members: members},

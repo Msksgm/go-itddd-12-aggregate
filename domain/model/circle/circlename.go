@@ -6,7 +6,7 @@ import (
 )
 
 type CircleName struct {
-	value string
+	Value string
 }
 
 func NewCircleName(value string) (*CircleName, error) {
@@ -16,17 +16,13 @@ func NewCircleName(value string) (*CircleName, error) {
 	if len(value) > 20 {
 		return nil, fmt.Errorf("CircleName is less than 20 characters.")
 	}
-	return &CircleName{value: value}, nil
-}
-
-func (circleName *CircleName) Value() string {
-	return circleName.value
+	return &CircleName{Value: value}, nil
 }
 
 func (circleName *CircleName) Equals(other CircleName) bool {
-	return reflect.DeepEqual(circleName.value, other.value)
+	return reflect.DeepEqual(circleName.Value, other.Value)
 }
 
 func (circleName *CircleName) String() string {
-	return fmt.Sprintf("CircleName: [value: %s]", circleName.value)
+	return fmt.Sprintf("CircleName: [value: %s]", circleName.Value)
 }
