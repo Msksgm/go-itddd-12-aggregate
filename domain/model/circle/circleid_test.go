@@ -12,7 +12,7 @@ func Test_NewCircleId(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	want := &CircleId{value: "id"}
+	want := &CircleId{Value: "id"}
 
 	if diff := cmp.Diff(want, got, cmp.AllowUnexported(CircleId{})); diff != "" {
 		t.Errorf("mismatch (-want, +got):\n%s", diff)
@@ -53,7 +53,7 @@ func Test_CircleIdString(t *testing.T) {
 		t.Fatal(err)
 	}
 	got := fmt.Sprint(circleId)
-	want := fmt.Sprintf("CircleId [value: %s]", circleId.value)
+	want := fmt.Sprintf("CircleId [value: %s]", circleId.Value)
 	if got != want {
 		t.Errorf("got %s, want %s", got, want)
 	}

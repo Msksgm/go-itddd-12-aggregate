@@ -18,7 +18,7 @@ func Test_Exists(t *testing.T) {
 	ownerId, _ := user.NewUserId("ownerId")
 	ownerName, _ := user.NewUserName("ownerName")
 	owner, _ := user.NewUser(*ownerId, *ownerName)
-	circleId := &CircleId{value: "circleId"}
+	circleId := &CircleId{Value: "circleId"}
 	circleName, _ := NewCircleName("circlename")
 	members := []user.User{*owner}
 	data := []struct {
