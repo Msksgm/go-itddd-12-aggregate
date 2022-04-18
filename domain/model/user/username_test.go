@@ -14,7 +14,7 @@ func Test_NewUserName(t *testing.T) {
 			t.Fatal(err)
 		}
 
-		want := &UserName{value: "username"}
+		want := &UserName{Value: "username"}
 		if diff := cmp.Diff(want, got, cmp.AllowUnexported(UserName{})); diff != "" {
 			t.Errorf("mismatch (-want, +got):\n%s", diff)
 		}
@@ -65,7 +65,7 @@ func Test_UserNameString(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	want := fmt.Sprintf("UserName: [value: %s]", userName.value)
+	want := fmt.Sprintf("UserName: [value: %s]", userName.Value)
 	got := fmt.Sprint(userName)
 	if got != want {
 		t.Errorf("got %s, want %s", got, want)

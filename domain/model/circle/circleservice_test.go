@@ -31,10 +31,10 @@ func Test_Exists(t *testing.T) {
 		{
 			"exists",
 			func(circleName CircleName) (*Circle, error) {
-				return &Circle{id: *circleId, name: CircleName{Value: "circlename"}, owner: *owner, members: members}, nil
+				return &Circle{Id: *circleId, Name: CircleName{Value: "circlename"}, Owner: *owner, Members: members}, nil
 			},
 			true,
-			&Circle{id: *circleId, name: *circleName, owner: *owner, members: members},
+			&Circle{Id: *circleId, Name: *circleName, Owner: *owner, Members: members},
 			"userService.Exists must be true but false",
 		},
 		{
@@ -43,7 +43,7 @@ func Test_Exists(t *testing.T) {
 				return nil, nil
 			},
 			false,
-			&Circle{id: *circleId, name: *circleName, owner: *owner, members: members},
+			&Circle{Id: *circleId, Name: *circleName, Owner: *owner, Members: members},
 			"userService.Exists must be false but true",
 		},
 	}

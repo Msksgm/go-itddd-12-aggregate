@@ -3,18 +3,18 @@ package circle
 import "github.com/Msksgm/go-itddd-12-aggregate/domain/model/user"
 
 type Circle struct {
-	id      CircleId
-	name    CircleName
-	owner   user.User
-	members []user.User
+	Id      CircleId
+	Name    CircleName
+	Owner   user.User
+	Members []user.User
 }
 
 func NewCircle(id CircleId, name CircleName, owner user.User, members []user.User) (*Circle, error) {
-	return &Circle{id: id, name: name, owner: owner, members: members}, nil
+	return &Circle{Id: id, Name: name, Owner: owner, Members: members}, nil
 }
 
 func (circle *Circle) IsFull() bool {
-	return len(circle.members) >= 29
+	return len(circle.Members) >= 29
 }
 
 type CircleIsFullError struct {
@@ -28,9 +28,9 @@ func (cife *CircleIsFullError) Error() string {
 
 func (circle *Circle) Join(newMember *user.User) error {
 	if circle.IsFull() {
-		return &CircleIsFullError{CircleId: circle.id, Message: "cannnot join member because the circle is full"}
+		return &CircleIsFullError{CircleId: circle.Id, Message: "cannnot join member because the circle is full"}
 	}
-	circle.members = append(circle.members, *newMember)
+	circle.Members = append(circle.Members, *newMember)
 	return nil
 }
 
@@ -44,15 +44,11 @@ func (minfe *MemberIsNotFoundError) Error() string {
 }
 
 func (circle *Circle) ChangeMemberName(memberId *user.UserId, changedUserName *user.UserName) error {
-	for i, member := range circle.members {
+	for i, member := range circle.Members {
 		if member.Id().Equals(memberId) {
-			circle.members[i].ChangeName(*changedUserName)
+			circle.Members[i].ChangeName(*changedUserName)
 			return nil
 		}
 	}
 	return &MemberIsNotFoundError{MemberId: *memberId, Message: "member is not found"}
-}
-
-func (circle *Circle) Name() *CircleName {
-	return &circle.name
 }

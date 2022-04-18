@@ -39,10 +39,10 @@ func Test_NewCircle(t *testing.T) {
 		t.Fatal(err)
 	}
 	want := &Circle{
-		id:      *circleId,
-		name:    *circleName,
-		owner:   *owner,
-		members: members,
+		Id:      *circleId,
+		Name:    *circleName,
+		Owner:   *owner,
+		Members: members,
 	}
 
 	if diff := cmp.Diff(want, got, cmp.AllowUnexported(CircleId{}, CircleName{}, user.User{}, user.UserId{}, user.UserName{}, Circle{})); diff != "" {
@@ -152,10 +152,10 @@ func Test_Join(t *testing.T) {
 	t.Run("success", func(t *testing.T) {
 		wantMembers := append(members, *member)
 		want := &Circle{
-			id:      *circleId,
-			name:    *circleName,
-			owner:   *owner,
-			members: wantMembers,
+			Id:      *circleId,
+			Name:    *circleName,
+			Owner:   *owner,
+			Members: wantMembers,
 		}
 
 		if err := circle.Join(member); err != nil {
@@ -236,10 +236,10 @@ func Test_ChangeMemberName(t *testing.T) {
 		}
 		got := circle
 		want := &Circle{
-			id:      *circleId,
-			name:    *circleName,
-			owner:   *owner,
-			members: []user.User{*owner, *chagedUserNameMember},
+			Id:      *circleId,
+			Name:    *circleName,
+			Owner:   *owner,
+			Members: []user.User{*owner, *chagedUserNameMember},
 		}
 		if diff := cmp.Diff(want, got, cmp.AllowUnexported(Circle{}, CircleId{}, CircleName{}, user.User{}, user.UserId{}, user.UserName{})); diff != "" {
 			t.Errorf("mismatch (-want, +got):\n%s", diff)

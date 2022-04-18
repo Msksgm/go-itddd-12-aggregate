@@ -10,7 +10,7 @@ func (circleService *CircleService) NewCircleService(circleRepository CircleRepo
 }
 
 func (circleService *CircleService) Exists(circle *Circle) (bool, error) {
-	circle, err := circleService.circleRepository.FindByCircleName(circle.Name())
+	circle, err := circleService.circleRepository.FindByCircleName(&circle.Name)
 	if err != nil {
 		return false, err
 	}
