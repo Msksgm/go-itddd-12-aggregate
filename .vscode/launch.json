@@ -1,0 +1,38 @@
+{
+  // IntelliSense を使用して利用可能な属性を学べます。
+  // 既存の属性の説明をホバーして表示します。
+  // 詳細情報は次を確認してください: https://go.microsoft.com/fwlink/?linkid=830387
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "IsFull",
+      "type": "go",
+      "request": "launch",
+      "mode": "auto",
+      "program": "${workspaceRoot}/domain/model/circle/circle_test.go",
+      "env": {},
+      "args": ["-test.v", "-test.run", "Test_IsFull"],
+      "showLog": true
+    },
+    {
+      "name": "Test_ChangeMemberName",
+      "type": "go",
+      "request": "launch",
+      "mode": "auto",
+      "program": "${workspaceRoot}/domain/model/circle/circle_test.go",
+      "env": {},
+      "args": ["-test.v", "-test.run", "Test_ChangeMemberName"],
+      "showLog": true
+    },
+    {
+      "name": "Test_Exists",
+      "type": "go",
+      "request": "launch",
+      "mode": "auto",
+      "program": "${workspaceRoot}/domain/model/circle/circleservice_test.go",
+      "env": {},
+      "args": ["-test.v", "-test.run", "Test_Exists"],
+      "showLog": true
+    }
+  ]
+}

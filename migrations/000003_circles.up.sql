@@ -1,0 +1,9 @@
+BEGIN;
+
+CREATE TABLE IF NOT EXISTS circles(
+    id VARCHAR(255) PRIMARY KEY,
+    owner_id VARCHAR(255) NOT NULL,
+    circlename VARCHAR(255) NOT NULL UNIQUE
+);
+
+COMMIT;
