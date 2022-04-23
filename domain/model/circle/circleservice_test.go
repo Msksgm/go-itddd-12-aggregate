@@ -7,7 +7,12 @@ import (
 )
 
 type CircleRepositorierStub struct {
+	save             func(circle Circle) error
 	findByCircleName func(circleName CircleName) (*Circle, error)
+}
+
+func (crs CircleRepositorierStub) Save(circle *Circle) error {
+	return crs.save(*circle)
 }
 
 func (crs CircleRepositorierStub) FindByCircleName(circleName *CircleName) (*Circle, error) {

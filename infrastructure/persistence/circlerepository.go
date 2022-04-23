@@ -15,6 +15,34 @@ func NewCircleRepository(db *sql.DB) (*CircleRepository, error) {
 	return &CircleRepository{db: db}, nil
 }
 
+func (cr *CircleRepository) Save(circle *circle.Circle) (err error) {
+	tx, err := cr.db.Begin()
+	if err != nil {
+		return
+	}
+	defer func() {
+		switch err {
+		case nil:
+			err = tx.Commit()
+		default:
+			tx.Rollback()
+		}
+	}()
+
+	_, err = tx.Exec("INSERT INTO circles(id, owner_id, circlename) VALUES ($1, $2, $3)", circle.Id.Value, circle.Owner.UserId.Value, circle.Name.Value)
+	if err != nil {
+		return err
+	}
+
+	for _, member := range circle.Members {
+		_, err = tx.Exec("INSERT INTO userCircles(user_id, circle_id) VALUES ($1, $2)", member.UserId.Value, circle.Id.Value)
+		if err != nil {
+			return err
+		}
+	}
+	return nil
+}
+
 type FindByCircleNameQueryError struct {
 	CircleName string
 	Message    string
