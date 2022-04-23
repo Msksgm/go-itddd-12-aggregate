@@ -1,10 +1,10 @@
 package persistence
 
 import (
-	"context"
 	"database/sql"
 
 	"github.com/Msksgm/go-itddd-12-aggregate/domain/model/circle"
+	"github.com/Msksgm/go-itddd-12-aggregate/domain/model/user"
 )
 
 type CircleRepository struct {
@@ -25,7 +25,7 @@ func (err *FindByCircleNameQueryError) Error() string {
 	return err.Message
 }
 
-func (cr *CircleRepository) FindByCircleName(ctx context.Context, circleName *circle.CircleName) (circle *circle.Circle, err error) {
+func (cr *CircleRepository) FindByCircleName(circleName *circle.CircleName) (findCircle *circle.Circle, err error) {
 	tx, err := cr.db.Begin()
 	if err != nil {
 		return
