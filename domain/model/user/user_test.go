@@ -19,7 +19,7 @@ func Test_NewUser(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	want := &User{id: *userId, name: *userName}
+	want := &User{UserId: *userId, Name: *userName}
 	if diff := cmp.Diff(want, got, cmp.AllowUnexported(User{}, UserId{}, UserName{})); diff != "" {
 		t.Errorf("mismatch (-want, +got):\n%s", diff)
 	}
@@ -44,11 +44,11 @@ func Test_ChangeUserName(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	otherUser := &User{id: *userId, name: *changedUserName}
+	otherUser := &User{UserId: *userId, Name: *changedUserName}
 	user.ChangeName(*changedUserName)
 
-	got := user.name
-	want := otherUser.name
+	got := user.Name
+	want := otherUser.Name
 	if got != want {
 		t.Errorf("got %s, want %s", got, want)
 	}

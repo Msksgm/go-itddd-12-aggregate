@@ -1,18 +1,18 @@
 package user
 
 type User struct {
-	id   UserId
-	name UserName
+	UserId UserId
+	Name   UserName
 }
 
 func NewUser(userId UserId, userName UserName) (*User, error) {
-	return &User{id: userId, name: userName}, nil
+	return &User{UserId: userId, Name: userName}, nil
 }
 
 func (user *User) ChangeName(userName UserName) {
-	user.name = userName
+	user.Name = userName
 }
 
 func (user *User) Id() *UserId {
-	return &user.id
+	return &user.UserId
 }
