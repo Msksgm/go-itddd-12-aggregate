@@ -13,7 +13,7 @@ func Test_NewUserId(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	want := &UserId{value: "id"}
+	want := &UserId{Value: "id"}
 
 	if diff := cmp.Diff(want, got, cmp.AllowUnexported(UserId{})); diff != "" {
 		t.Errorf("mismatch (-want, +got):\n%s", diff)
@@ -53,7 +53,7 @@ func Test_UserIdString(t *testing.T) {
 		t.Fatal(err)
 	}
 	got := fmt.Sprint(userId)
-	want := fmt.Sprintf("UserId [value: %s]", userId.value)
+	want := fmt.Sprintf("UserId [value: %s]", userId.Value)
 	if got != want {
 		t.Errorf("got %s, want %s", got, want)
 	}

@@ -6,17 +6,17 @@ import (
 )
 
 type UserId struct {
-	value string
+	Value string
 }
 
 func NewUserId(value string) (*UserId, error) {
-	return &UserId{value: value}, nil
+	return &UserId{Value: value}, nil
 }
 
 func (userId *UserId) Equals(other *UserId) bool {
-	return reflect.DeepEqual(userId.value, other.value)
+	return reflect.DeepEqual(userId.Value, other.Value)
 }
 
 func (userId *UserId) String() string {
-	return fmt.Sprintf("UserId [value: %s]", userId.value)
+	return fmt.Sprintf("UserId [value: %s]", userId.Value)
 }
