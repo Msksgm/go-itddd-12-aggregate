@@ -25,7 +25,7 @@ func (err *FindByCircleNameQueryError) Error() string {
 	return err.Message
 }
 
-func (cr *CircleRepository) FindByCircleName(circleName *circle.CircleName) (findCircle *circle.Circle, err error) {
+func (cr *CircleRepository) FindByCircleName(circleName *circle.CircleName) (_ *circle.Circle, err error) {
 	tx, err := cr.db.Begin()
 	if err != nil {
 		return
@@ -39,17 +39,48 @@ func (cr *CircleRepository) FindByCircleName(circleName *circle.CircleName) (fin
 		}
 	}()
 
-	rows, err := tx.Query("SELECT * FROM circles WHERE circlename = $1", circleName.Value())
+	rows, err := tx.Query("SELECT c.id, c.circlename, c.owner_id, u.id, u.name from circles c LEFT OUTER JOIN userCircles uc ON c.id = uc.circle_id LEFT OUTER JOIN users u ON u.id = uc.user_id WHERE c.circlename = $1", circleName.Value)
 	if err != nil {
-		return nil, &FindByCircleNameQueryError{CircleName: circleName.Value(), Message: "error is occured in circlerepository.FindByCircleName", Err: err}
+		return nil, &FindByCircleNameQueryError{CircleName: circleName.Value, Message: "error is occured in circlerepository.FindByCircleName", Err: err}
 	}
 	defer rows.Close()
 
+	findCircleId := &circle.CircleId{}
+	findCircleName := &circle.CircleName{}
+	ownerId := &user.UserId{}
+	memberId := &user.UserId{}
+	memberName := &user.UserName{}
+	members := []user.User{}
 	for rows.Next() {
-		err := rows.Scan()
+		err := rows.Scan(&findCircleId.Value, &findCircleName.Value, &ownerId.Value, &memberId.Value, &memberName.Value)
+		if err != nil {
+			return nil, err
+		}
+		members = append(members, user.User{UserId: *memberId, Name: *memberName})
+	}
+	err = rows.Err()
+	if err != nil {
+		return nil, err
+	}
+
+	if ownerId == nil {
+		return nil, nil
+	}
+	rows, err = tx.Query("SELECT id, name from users WHERE id = $1", ownerId.Value)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+
+	ownerName := &user.UserName{}
+	for rows.Next() {
+		err := rows.Scan(&ownerId.Value, &ownerName.Value)
 		if err != nil {
 			return nil, err
 		}
 	}
-	return circle, nil
+
+	owner := &user.User{UserId: *ownerId, Name: *ownerName}
+	findCircle := &circle.Circle{Id: *findCircleId, Name: *findCircleName, Owner: *owner, Members: members}
+	return findCircle, nil
 }
