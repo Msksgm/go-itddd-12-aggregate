@@ -1,6 +1,7 @@
 package application
 
 import (
+	"fmt"
 	"log"
 
 	"github.com/Msksgm/go-itddd-12-aggregate/domain/model/circle"
@@ -57,6 +58,14 @@ func (cas *CircleApplicationService) Register(circleName string) error {
 	if err != nil {
 		return nil
 	}
+	isCircleExists, err := cas.circleService.Exists(newCircle)
+	if err != nil {
+		return err
+	}
+	if isCircleExists {
+		return fmt.Errorf("circleName of %s is already exists.", circleName)
+	}
+
 	if err := cas.circleRepository.Save(newCircle); err != nil {
 		return err
 	}
