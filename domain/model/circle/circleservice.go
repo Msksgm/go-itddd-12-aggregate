@@ -4,9 +4,8 @@ type CircleService struct {
 	circleRepository CircleRepositorier
 }
 
-func (circleService *CircleService) NewCircleService(circleRepository CircleRepositorier) error {
-	circleService.circleRepository = circleRepository
-	return nil
+func NewCircleService(circleRepository CircleRepositorier) (*CircleService, error) {
+	return &CircleService{circleRepository: circleRepository}, nil
 }
 
 func (circleService *CircleService) Exists(circle *Circle) (bool, error) {
