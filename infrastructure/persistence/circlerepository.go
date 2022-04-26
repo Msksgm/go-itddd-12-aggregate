@@ -53,7 +53,7 @@ func (err *FindByCircleNameQueryError) Error() string {
 	return err.Message
 }
 
-func (cr *CircleRepository) FindByCircleName(circleName *circle.CircleName) (_ *circle.Circle, err error) {
+func (cr *CircleRepository) FindByCircleName(circleName *circle.CircleName) (findCircle *circle.Circle, err error) {
 	tx, err := cr.db.Begin()
 	if err != nil {
 		return
@@ -106,9 +106,9 @@ func (cr *CircleRepository) FindByCircleName(circleName *circle.CircleName) (_ *
 		if err != nil {
 			return nil, err
 		}
+		owner := &user.User{UserId: *ownerId, Name: *ownerName}
+		findCircle = &circle.Circle{Id: *findCircleId, Name: *findCircleName, Owner: *owner, Members: members}
 	}
 
-	owner := &user.User{UserId: *ownerId, Name: *ownerName}
-	findCircle := &circle.Circle{Id: *findCircleId, Name: *findCircleName, Owner: *owner, Members: members}
 	return findCircle, nil
 }
