@@ -17,7 +17,12 @@ func NewCircleApplicationService(circleRepository circle.CircleRepositorier, cir
 	return &CircleApplicationService{circleRepository: circleRepository, circleService: circleService}, nil
 }
 
-func (cas *CircleApplicationService) Register(circleName string) error {
+func (cas *CircleApplicationService) Register(circleName string) (err error) {
+	defer func() {
+		if err != nil {
+			err = &RegisterError{Name: circleName, Message: fmt.Sprintf("circleapplicationservice.Register err: %s", err), Err: err}
+		}
+	}()
 	newCircleId, err := circle.NewCircleId("test-circle-id")
 	if err != nil {
 		return nil
@@ -71,4 +76,33 @@ func (cas *CircleApplicationService) Register(circleName string) error {
 	}
 	log.Println("success fully saved")
 	return nil
+}
+
+type RegisterError struct {
+	Name    string
+	Message string
+	Err     error
+}
+
+func (err *RegisterError) Error() string {
+	return err.Message
+}
+
+type CircleData struct {
+	Id      circle.CircleId
+	Name    circle.CircleName
+	Owner   user.User
+	Members []user.User
+}
+
+func (cas *CircleApplicationService) Get(circleName string) (_ *CircleData, err error) {
+	targetName, err := circle.NewCircleName(circleName)
+	if err != nil {
+		return nil, err
+	}
+	circle, err := cas.circleRepository.FindByCircleName(targetName)
+	if err != nil {
+		return nil, err
+	}
+	return &CircleData{Id: circle.Id, Name: circle.Name, Owner: circle.Owner, Members: circle.Members}, nil
 }

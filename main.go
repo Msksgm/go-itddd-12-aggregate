@@ -2,6 +2,7 @@ package main
 
 import (
 	"database/sql"
+	"flag"
 	"fmt"
 	"log"
 	"os"
@@ -12,6 +13,8 @@ import (
 	"github.com/msksgm/go-itddd-12-aggregate/domain/model/circle"
 	"github.com/msksgm/go-itddd-12-aggregate/infrastructure/persistence"
 )
+
+var command = flag.String("usecase", "", "usercase of application")
 
 func main() {
 	uri := fmt.Sprintf("postgres://%s/%s?sslmode=disable&user=%s&password=%s&port=%s&timezone=Asia/Tokyo",
@@ -38,7 +41,20 @@ func main() {
 		panic(err)
 	}
 
-	if err := circleApplicationService.Register("test-circle-name"); err != nil {
-		log.Println(err)
+	flag.Parse()
+	log.Println(*command)
+	switch *command {
+	case "register":
+		if err := circleApplicationService.Register("test-circle-name"); err != nil {
+			log.Println(err)
+		}
+	case "get":
+		circleData, err := circleApplicationService.Get("test-circle-name")
+		if err != nil {
+			log.Println(err)
+		}
+		log.Println(circleData)
+	default:
+		log.Printf("%s is not command. choose in ('register', 'get', 'update', 'delete')", *command)
 	}
 }
