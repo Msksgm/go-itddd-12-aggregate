@@ -5,8 +5,8 @@ import (
 	"reflect"
 	"testing"
 
-	"github.com/Msksgm/go-itddd-12-aggregate/domain/model/user"
 	"github.com/google/go-cmp/cmp"
+	"github.com/msksgm/go-itddd-12-aggregate/domain/model/user"
 )
 
 func Test_NewCircle(t *testing.T) {

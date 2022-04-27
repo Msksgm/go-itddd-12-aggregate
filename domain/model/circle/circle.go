@@ -1,6 +1,6 @@
 package circle
 
-import "github.com/Msksgm/go-itddd-12-aggregate/domain/model/user"
+import "github.com/msksgm/go-itddd-12-aggregate/domain/model/user"
 
 type Circle struct {
 	Id      CircleId

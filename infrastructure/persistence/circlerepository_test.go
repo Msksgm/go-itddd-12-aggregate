@@ -5,9 +5,9 @@ import (
 	"testing"
 
 	"github.com/DATA-DOG/go-sqlmock"
-	"github.com/Msksgm/go-itddd-12-aggregate/domain/model/circle"
-	"github.com/Msksgm/go-itddd-12-aggregate/domain/model/user"
 	"github.com/google/go-cmp/cmp"
+	"github.com/msksgm/go-itddd-12-aggregate/domain/model/circle"
+	"github.com/msksgm/go-itddd-12-aggregate/domain/model/user"
 )
 
 func Test_Save(t *testing.T) {

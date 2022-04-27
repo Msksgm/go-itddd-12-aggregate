@@ -3,8 +3,8 @@ package persistence
 import (
 	"database/sql"
 
-	"github.com/Msksgm/go-itddd-12-aggregate/domain/model/circle"
-	"github.com/Msksgm/go-itddd-12-aggregate/domain/model/user"
+	"github.com/msksgm/go-itddd-12-aggregate/domain/model/circle"
+	"github.com/msksgm/go-itddd-12-aggregate/domain/model/user"
 )
 
 type CircleRepository struct {

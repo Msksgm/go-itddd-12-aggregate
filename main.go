@@ -8,9 +8,9 @@ import (
 
 	_ "github.com/lib/pq"
 
-	"github.com/Msksgm/go-itddd-12-aggregate/application"
-	"github.com/Msksgm/go-itddd-12-aggregate/domain/model/circle"
-	"github.com/Msksgm/go-itddd-12-aggregate/infrastructure/persistence"
+	"github.com/msksgm/go-itddd-12-aggregate/application"
+	"github.com/msksgm/go-itddd-12-aggregate/domain/model/circle"
+	"github.com/msksgm/go-itddd-12-aggregate/infrastructure/persistence"
 )
 
 func main() {

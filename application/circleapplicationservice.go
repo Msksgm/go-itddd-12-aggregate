@@ -4,8 +4,8 @@ import (
 	"fmt"
 	"log"
 
-	"github.com/Msksgm/go-itddd-12-aggregate/domain/model/circle"
-	"github.com/Msksgm/go-itddd-12-aggregate/domain/model/user"
+	"github.com/msksgm/go-itddd-12-aggregate/domain/model/circle"
+	"github.com/msksgm/go-itddd-12-aggregate/domain/model/user"
 )
 
 type CircleApplicationService struct {
