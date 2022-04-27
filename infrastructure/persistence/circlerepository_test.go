@@ -65,7 +65,7 @@ func Test_FindByCircleName(t *testing.T) {
 
 	t.Run("found", func(t *testing.T) {
 		mock.ExpectBegin()
-		mock.ExpectQuery(regexp.QuoteMeta(`SELECT c.id, c.circlename, c.owner_id, u.id, u.name from circles c LEFT OUTER JOIN userCircles uc ON c.id = uc.circle_id LEFT OUTER JOIN users u ON u.id = uc.user_id WHERE c.circlename = $1`)).
+		mock.ExpectQuery(regexp.QuoteMeta(`SELECT c.id, c.circlename, c.owner_id, u.id, u.name from circles c JOIN userCircles uc ON c.id = uc.circle_id JOIN users u ON u.id = uc.user_id WHERE c.circlename = $1`)).
 			WithArgs("circleName").
 			WillReturnRows(mock.NewRows([]string{"circleId", "circleName", "ownerId", "userId", "userName"}).
 				AddRow("circleId", "circleName", "ownerId", "ownerId", "ownerName").

@@ -67,7 +67,7 @@ func (cr *CircleRepository) FindByCircleName(circleName *circle.CircleName) (fin
 		}
 	}()
 
-	rows, err := tx.Query("SELECT c.id, c.circlename, c.owner_id, u.id, u.name from circles c LEFT OUTER JOIN userCircles uc ON c.id = uc.circle_id LEFT OUTER JOIN users u ON u.id = uc.user_id WHERE c.circlename = $1", circleName.Value)
+	rows, err := tx.Query("SELECT c.id, c.circlename, c.owner_id, u.id, u.name from circles c JOIN userCircles uc ON c.id = uc.circle_id JOIN users u ON u.id = uc.user_id WHERE c.circlename = $1", circleName.Value)
 	if err != nil {
 		return nil, &FindByCircleNameQueryError{CircleName: circleName.Value, Message: "error is occured in circlerepository.FindByCircleName", Err: err}
 	}
